@@ -47,6 +47,16 @@
       img.setAttribute('alt', img.getAttribute('data-alt-' + lang) || '');
     }
 
+    // …and so does the label on the Sakurajima video.
+    var labelled = document.querySelectorAll('[data-aria-ja]');
+    for (var m = 0; m < labelled.length; m++) {
+      var el = labelled[m];
+      if (!el.getAttribute('data-aria-en')) {
+        el.setAttribute('data-aria-en', el.getAttribute('aria-label') || '');
+      }
+      el.setAttribute('aria-label', el.getAttribute('data-aria-' + lang) || '');
+    }
+
     for (var j = 0; j < buttons.length; j++) {
       var on = buttons[j].getAttribute('data-set-lang') === lang;
       buttons[j].classList.toggle('is-on', on);
@@ -72,13 +82,51 @@
   applyLang(initial);
 
 
-  /* --- 2. Reveal -------------------------------------------------- */
-
-  var targets = document.querySelectorAll('.reveal');
-  if (!targets.length) return;
+  /* --- 2. Sakurajima time-lapse ------------------------------------ */
 
   var reduceMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var video = document.querySelector('.figure__media[poster]');
+
+  // The clip is ~1.5 MB. preload="none" in the HTML means nothing is
+  // fetched until play() is called here, and that only happens once the
+  // section is actually on screen. Reduced motion keeps the poster still.
+  var playBtn = document.querySelector('.video-play');
+
+  function tryPlay(showButtonOnFailure) {
+    var playing = video.play();
+    if (playing && playing.then) {
+      playing.then(function () {
+        if (playBtn) playBtn.hidden = true;
+      }).catch(function () {
+        // Autoplay refused (iOS Low Power Mode, data saver). Offer the button.
+        if (playBtn && showButtonOnFailure) playBtn.hidden = false;
+      });
+    }
+  }
+
+  if (video && playBtn) {
+    playBtn.addEventListener('click', function () { tryPlay(false); });
+  }
+
+  if (video && !reduceMotion && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          tryPlay(true);
+        } else if (!entry.target.paused) {
+          entry.target.pause();          // off screen: no battery, no data
+        }
+      });
+    }, { threshold: 0.25 }).observe(video);
+  }
+
+
+  /* --- 3. Reveal -------------------------------------------------- */
+
+  var targets = document.querySelectorAll('.reveal');
+  if (!targets.length) return;
 
   function showAll() {
     for (var i = 0; i < targets.length; i++) {

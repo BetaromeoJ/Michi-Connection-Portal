@@ -9,7 +9,7 @@ Concept: **Remember Michi. Know the story. Stay connected.**
 Built on the WADARIN LP Framework v2.0 build rules
 (static HTML / CSS / minimal JS / `images/`, GitHub Pages, no Base64, relative paths).
 
-Version 1.1 — English + Japanese, expanded Otsu no Konbo section.
+Version 1.3 — English + Japanese, real photos, Sakurajima time-lapse, live links.
 
 ---
 
@@ -18,14 +18,18 @@ Version 1.1 — English + Japanese, expanded Otsu no Konbo section.
 ```
 index.html      All copy and markup, in both languages. Six sections.
 style.css       Mobile first. Section 10 holds the desktop overrides.
-script.js       Language switch + one soft reveal for the photos. Nothing else.
+script.js       Language switch, the time-lapse, one soft reveal. Nothing else.
 favicon.svg
 images/
-  placeholder-portrait.svg      → replace with michi-portrait.jpg
-  placeholder-sakurajima.svg    → replace with sakurajima.jpg
-  placeholder-konbo.svg         → replace with otsu-no-konbo.jpg
-  og-image.png                  → replace when a real share image exists
+  michi-portrait.jpg     600 × 600      45 KB
+  sakurajima.mp4       1024 × 688     1.45 MB   18.5s silent loop, no audio track
+  sakurajima.jpg       1024 × 688       78 KB   poster frame for the video
+  otsu-no-konbo.jpg    1200 × 800       49 KB
+  og-image.png         1200 × 630      149 KB   share image
 ```
+
+First screen weighs **86 KB** (HTML + CSS + JS + portrait). Nothing else is
+fetched until the visitor scrolls.
 
 ---
 
@@ -58,46 +62,72 @@ live in the `META` object at the top of `script.js`.
 
 ## What to replace before publishing
 
-Open `index.html` and search for **`REPLACE_`**. There are seven:
+One thing: search `index.html` for **`REPLACE_SITE_URL`**. It appears twice, in
+`<head>` — the canonical link and `og:url`. Put the published address there,
+e.g. `https://USERNAME.github.io/michi-connection-portal/`.
 
-| Token | Where | What |
-|---|---|---|
-| `REPLACE_SITE_URL` | `<head>` | canonical + `og:url`, e.g. `https://USERNAME.github.io/michi-connection-portal/` |
-| `REPLACE_LINKEDIN_URL` | Connect | LinkedIn profile URL |
-| `REPLACE_FACEBOOK_URL` | Connect | Facebook profile URL |
-| `REPLACE_INSTAGRAM_URL` | Connect | Instagram profile URL |
-| `REPLACE_EMAIL` | Connect | email address (becomes `mailto:`) |
-| `REPLACE_GITHUB_URL` | Connect | optional — the row is commented out |
-| `REPLACE_WEBSITE_URL` | Connect | optional — the row is commented out |
+### Connect section — live
+
+| | |
+|---|---|
+| Facebook | `https://www.facebook.com/wowwdarling` |
+| Instagram | `https://www.instagram.com/wowwdarling/` |
+| Email | `michihirowadarin@gmail.com` |
+
+The Instagram link deliberately drops the `?hl=ja` parameter; it would force the
+Japanese Instagram interface on every visitor.
+
+### Connect section — ready but switched off
+
+LinkedIn, GitHub and Website sit in a commented-out block at the end of the
+Connect list. To switch one on, delete the `<!--` / `-->` markers around its
+`<li>` and replace the `REPLACE_…_URL` token. LinkedIn is kept there because it
+is the planned primary connection for the international educator network.
 
 Each URL appears **once**, in the Connect section only.
 
-### Photos
+All photos are in place; nothing else is required before publishing.
 
-| File | Size | Notes |
-|---|---|---|
-| `images/michi-portrait.jpg` | square, 600 × 600 | under 150 KB. Cropped to a circle |
-| `images/sakurajima.jpg` | 1600 × 1000 (16:10) | under 400 KB |
-| `images/otsu-no-konbo.jpg` | square, 800 × 800 | under 200 KB |
-| `images/og-image.png` | exactly 1200 × 630 | share image |
+### The Sakurajima time-lapse
 
-**For `otsu-no-konbo.jpg`, a photo with all three colours in it works best** —
-red, yellow and white together, shot close, plain background, so the three cards
-underneath are read as "the ones Michi had". A single-colour photo also works.
+`images/sakurajima.mp4` is an 18.5-second silent loop cut from the original
+51-second clip, with the black side bars removed and the end cross-faded back
+into the beginning so the loop has no visible jump.
 
-Each is marked `<!-- PLACEHOLDER IMAGE -->` in `index.html`. Update the `src`,
-and the `alt` / `data-alt-ja` pair if the photo shows something different.
+How it behaves:
 
-The portrait uses `object-position: center 40%`. If the face sits high or low in
-the frame, adjust that one value in `style.css`.
+- `preload="none"` — the file is not requested at all until the section scrolls
+  into view. The first screen never waits for it.
+- `muted loop playsinline`, no controls. It pauses when scrolled away.
+- `prefers-reduced-motion: reduce` → it never plays; the poster frame stands in
+  as a still photo.
+- If the browser refuses to autoplay (iOS Low Power Mode, data saver), a small
+  play button appears over the poster.
+- With JavaScript disabled the poster is simply shown as a photo.
 
-Optional later: individual photos for each colour card. The markup would take one
+**To go back to a still photo instead**, replace the `<video>` block in
+`index.html` with
+`<img class="figure__media" src="images/sakurajima.jpg" alt="…" loading="lazy">`.
+Nothing in the CSS needs to change.
+
+To re-cut the clip from a new source:
+
+```sh
+ffmpeg -i source.mp4 -vf "crop=1072:720:104:0,scale=1024:-2,fps=20" \
+  -c:v libx264 -profile:v main -pix_fmt yuv420p -crf 29 \
+  -preset slower -movflags +faststart -an images/sakurajima.mp4
+ffmpeg -i images/sakurajima.mp4 -frames:v 1 -q:v 3 images/sakurajima.jpg
+```
+
+### Replacing a photo later
+
+Update the `src` in `index.html`, and the `alt` / `data-alt-ja` pair if the new
+photo shows something different. The portrait uses
+`object-position: center 40%`; if a new face sits high or low in the frame,
+adjust that one value in `style.css`.
+
+Optional: individual photos for each colour card. The markup would take one
 `<img>` per `.color` item; ask and it can be added without touching anything else.
-
-### Optional links
-
-To switch on GitHub or Website, delete the `<!--` / `-->` markers around those
-two `<li>` blocks in the Connect section and fill in the URL.
 
 ---
 

@@ -73,7 +73,9 @@ body{
   -webkit-font-smoothing: antialiased;
 }
 
-img{ max-width: 100%; height: auto; display: block; }
+/* height:auto matters for <video> too: the width/height attributes are
+   presentational hints that would otherwise beat aspect-ratio. */
+img, video{ max-width: 100%; height: auto; display: block; }
 
 a{ color: var(--ember); }
 a:focus-visible,
@@ -303,11 +305,35 @@ html[lang="ja"] .question__note{ line-height: 1.9; }
 /* === 5. Figures =================================================== */
 
 .figure{ margin: 0; }
+.figure--wide{ position: relative; }
 
-.figure--wide img{
+.video-play{
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 1.1rem);          /* optically centred over the media */
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  padding: 0 0 0 3px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(35,32,29,0.62);
+  color: #fff;
+  cursor: pointer;
+}
+.video-play[hidden]{ display: none; }
+
+/* Matches the native 1024 × 688 of the Sakurajima clip, so nothing is
+   cropped away at any width. */
+.figure--wide .figure__media{
+  display: block;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  height: auto;
   max-width: 100%;
+  aspect-ratio: 1024 / 688;
   object-fit: cover;
   object-position: center;
   background: var(--paper-2);
@@ -329,10 +355,12 @@ html[lang="ja"] .question__note{ line-height: 1.9; }
 
 .gift__head{ margin-bottom: 1.75rem; }
 
-.gift__figure{ margin: 0 0 1.1rem; }
+/* The photo shows all three colours, so it is landscape and sits above
+   the text — kept well under full width so the section stays small. */
+.gift__figure{ margin: 0 0 1.25rem; max-width: 28rem; }
 .gift__figure img{
-  width: 132px;
-  height: 132px;
+  width: 100%;
+  aspect-ratio: 3 / 2;
   border-radius: var(--radius);
   object-fit: cover;
   background: var(--paper);
@@ -584,10 +612,9 @@ html[lang="ja"] .story-details__body ul{ line-height: 1.9; }
   .section{ padding-block: 5rem; }
   .section__title{ font-size: 1.65rem; }
 
-  .figure--wide img{
+  .figure--wide .figure__media{
     max-width: var(--wrap-wide);
     margin-inline: auto;
-    aspect-ratio: 16 / 9;
     border-radius: var(--radius);
   }
   .figure figcaption{ max-width: var(--wrap-wide); padding-inline: 1.5rem; }
@@ -596,15 +623,8 @@ html[lang="ja"] .story-details__body ul{ line-height: 1.9; }
      can sit side by side without crushing the text. */
   .section--gift .wrap{ max-width: 46rem; }
 
-  .gift__head{
-    display: grid;
-    grid-template-columns: 170px 1fr;
-    gap: 2.25rem;
-    align-items: start;
-    margin-bottom: 2.25rem;
-  }
-  .gift__figure{ margin: 0; }
-  .gift__figure img{ width: 170px; height: 170px; }
+  .gift__head{ margin-bottom: 2.25rem; }
+  .gift__figure{ margin-bottom: 1.75rem; }
 
   .colors{ grid-template-columns: repeat(3, 1fr); gap: 0.9rem; }
   .color{ flex-direction: column; gap: 0.6rem; padding: 1.1rem; }
@@ -612,5 +632,7 @@ html[lang="ja"] .story-details__body ul{ line-height: 1.9; }
 
   .gift__punch{ font-size: 1.3rem; }
 
-  .links{ grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+  /* One column, so no row is ever left with a single orphan card.
+     Narrow enough that the rows still read as buttons, not banners. */
+  .links{ max-width: 24rem; gap: 0.8rem; }
 }
