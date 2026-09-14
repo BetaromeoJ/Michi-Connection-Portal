@@ -1,8 +1,13 @@
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="en" translate="no" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- The page ships its own Japanese, so browser auto-translation must stay
+     off. Left on, Safari/Chrome translate the whole page — including the
+     name — and keep re-translating it after the EN button is pressed. -->
+<meta name="google" content="notranslate">
 
 <title>Michi Wada | Educator &amp; Innovator</title>
 <meta name="description" content="Michi Wada is a Japanese educator from Kagoshima, Japan, connecting with educators around the world through education, innovation, AI, and school transformation.">
@@ -57,7 +62,7 @@
 <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
 </head>
 
-<body>
+<body class="notranslate">
 
 <a class="skip-link" href="#main"><span data-lang="en">Skip to content</span><span data-lang="ja">本文へ移動</span></a>
 
@@ -91,16 +96,20 @@
            src="images/michi-portrait.jpg"
            width="600" height="600"
            alt="Portrait of Michi Wada"
-           data-alt-ja="Michi Wada の顔写真"
+           data-alt-ja="ワダミチの顔写真"
            fetchpriority="high" decoding="async">
 
-      <h1 class="hero__name">Michi Wada</h1>
-      <p class="hero__role"><span data-lang="en">Educator · Innovator</span><span data-lang="ja">教育者 · イノベーター</span></p>
+      <!-- NAME. Only these two forms are permitted:
+           English "Michi Wada" / Japanese "ワダミチ".
+           Never write the name in kanji — the spelling is not confirmed. -->
+      <h1 class="hero__name"><span data-lang="en">Michi Wada</span><span data-lang="ja">ワダミチ</span></h1>
+      <p class="hero__role"><span data-lang="en">Educator · Innovator</span><span data-lang="ja">教育者・イノベーター</span></p>
       <p class="hero__place"><span data-lang="en">Kagoshima, Japan</span><span data-lang="ja">日本・鹿児島</span></p>
 
       <p class="hero__cred">
-        Google for Education Certified Innovator
-        <span class="hero__mel">MEL26 · Melbourne · 2026</span>
+        <span data-lang="en">Google for Education Certified Innovator</span>
+        <span data-lang="ja">Google for Education 認定イノベーター</span>
+        <span class="hero__mel"><span data-lang="en">MEL26 · Melbourne · 2026</span><span data-lang="ja">MEL26・メルボルン・2026</span></span>
       </p>
 
       <a class="btn btn--primary" href="#connect"><span data-lang="en">Connect with Michi</span><span data-lang="ja">Michi とつながる</span></a>
@@ -143,7 +152,7 @@
 
       <blockquote class="question">
         <p data-lang="en">What if schools changed instead of asking students to change?</p>
-        <p data-lang="ja">子どもを学校に合わせるのではなく、学校の側を変えることはできないか。</p>
+        <p data-lang="ja">子どもを学校に合わせるのではなく、<br>学校の側を変えることはできないか。</p>
       </blockquote>
 
       <!-- 短く。Aboutと内容が重ならないようにし、問いそのものを主役にする。 -->
@@ -206,7 +215,7 @@
            loading="lazy" decoding="async">
       <figcaption>
         <span data-lang="en">Sakurajima, erupting &mdash; seen from the city.</span>
-        <span data-lang="ja">噴火する桜島。市街地から。</span>
+        <span data-lang="ja">噴火する桜島 &mdash; 鹿児島市街地から。</span>
         <span class="credit">&copy;ken.n.miffy.752</span>
       </figcaption>
     </figure>
@@ -290,7 +299,7 @@
        ============================================================ -->
   <section class="section section--connect" id="connect">
     <div class="wrap">
-      <h2 class="section__title"><span data-lang="en">Let&rsquo;s stay connected.</span><span data-lang="ja">これからも、つながっていましょう。</span></h2>
+      <h2 class="section__title"><span data-lang="en">Let&rsquo;s stay connected.</span><span data-lang="ja">これからも、<br>つながっていましょう。</span></h2>
 
       <p class="lead lead--tight" data-lang="en">
         If we met at MEL26 &mdash; or anywhere else &mdash; I&rsquo;d be glad to keep talking.
@@ -393,7 +402,7 @@
 
 <footer class="footer">
   <div class="wrap">
-    <p>Michi Wada &nbsp;·&nbsp; Michihiro Wada</p>
+    <p><span data-lang="en">Michi Wada &nbsp;·&nbsp; Michihiro Wada</span><span data-lang="ja">ワダミチ</span></p>
     <p class="footer__sub"><span data-lang="en">Kagoshima, Japan</span><span data-lang="ja">日本・鹿児島</span></p>
   </div>
 </footer>

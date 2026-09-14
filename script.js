@@ -12,7 +12,19 @@
 (function () {
   'use strict';
 
-  /* --- 1. Language ------------------------------------------------ */
+  /* --- 1. Language ------------------------------------------------
+
+     How it works
+     ------------
+     Every translatable string sits in index.html twice, as
+     <span data-lang="en">…</span><span data-lang="ja">…</span>.
+     CSS hides whichever one does not match <html lang>. So switching
+     language here is a single attribute change — no DOM is rebuilt, no
+     markup is regenerated, and no event listener can be lost.
+
+     The click handler is bound once to the switch container (event
+     delegation), so it keeps working however many times you toggle.
+     ------------------------------------------------------------------ */
 
   // Page metadata per language. Body copy lives in index.html.
   var META = {
@@ -21,18 +33,23 @@
       description: 'Michi Wada is a Japanese educator from Kagoshima, Japan, connecting with educators around the world through education, innovation, AI, and school transformation.'
     },
     ja: {
-      title: 'Michi Wada｜教育者・イノベーター',
-      description: '鹿児島で国語を教える Michi Wada のポータル。教育、イノベーション、AI、学校DXを通じて、世界の教育者とつながります。'
+      title: 'ワダミチ｜教育者・イノベーター',
+      description: '鹿児島で国語を教えるワダミチのポータル。教育、イノベーション、AI、学校DXを通じて、世界の教育者とつながります。'
     }
   };
 
-  var buttons = document.querySelectorAll('[data-set-lang]');
+  var switcher = document.querySelector('.lang-switch');
   var descTag = document.querySelector('meta[name="description"]');
+  var currentLang = null;
 
   function applyLang(lang) {
     if (lang !== 'ja') lang = 'en';
+    if (lang === currentLang) return;
+    currentLang = lang;
 
+    // This one attribute is what shows one language and hides the other.
     document.documentElement.setAttribute('lang', lang);
+
     document.title = META[lang].title;
     if (descTag) descTag.setAttribute('content', META[lang].description);
 
@@ -40,7 +57,7 @@
     var imgs = document.querySelectorAll('img[data-alt-ja]');
     for (var i = 0; i < imgs.length; i++) {
       var img = imgs[i];
-      if (!img.getAttribute('data-alt-en')) {
+      if (img.getAttribute('data-alt-en') === null) {
         img.setAttribute('data-alt-en', img.getAttribute('alt') || '');
       }
       img.setAttribute('alt', img.getAttribute('data-alt-' + lang) || '');
@@ -50,12 +67,14 @@
     var labelled = document.querySelectorAll('[data-aria-ja]');
     for (var m = 0; m < labelled.length; m++) {
       var el = labelled[m];
-      if (!el.getAttribute('data-aria-en')) {
+      if (el.getAttribute('data-aria-en') === null) {
         el.setAttribute('data-aria-en', el.getAttribute('aria-label') || '');
       }
       el.setAttribute('aria-label', el.getAttribute('data-aria-' + lang) || '');
     }
 
+    // Button state always matches what is on screen.
+    var buttons = document.querySelectorAll('[data-set-lang]');
     for (var j = 0; j < buttons.length; j++) {
       var on = buttons[j].getAttribute('data-set-lang') === lang;
       buttons[j].classList.toggle('is-on', on);
@@ -63,21 +82,26 @@
     }
   }
 
-  for (var k = 0; k < buttons.length; k++) {
-    buttons[k].addEventListener('click', function () {
-      applyLang(this.getAttribute('data-set-lang'));
+  // One listener on the container, bound once. Works for any number of
+  // switches in either direction, for as long as the page is open.
+  if (switcher) {
+    switcher.addEventListener('click', function (event) {
+      var btn = event.target.closest ? event.target.closest('[data-set-lang]') : null;
+      if (btn && switcher.contains(btn)) {
+        applyLang(btn.getAttribute('data-set-lang'));
+      }
     });
   }
 
   // Every visit starts in English — no browser-language guess, nothing
   // remembered between visits. The MEL26 visitor who scans the QR code
   // always lands on the English page, whatever their phone is set to.
+  currentLang = null;
   applyLang('en');
 
 
   /* --- 2. The switch steps back once the hero is gone -------------- */
 
-  var switcher = document.querySelector('.lang-switch');
   if (switcher) {
     var compact = false;
     var onScroll = function () {

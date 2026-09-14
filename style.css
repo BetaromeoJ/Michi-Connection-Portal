@@ -304,11 +304,12 @@ h1, h2{ line-height: 1.25; letter-spacing: -0.01em; margin: 0; }
   font-style: italic;
   color: var(--paper);
 }
-/* Japanese does not carry italics well. */
+/* Japanese does not carry italics well. The size is set so that each of
+   the two lines of the question fits on one line at 320px and up. */
 .question p[data-lang="ja"]{
   font-style: normal;
-  font-size: clamp(1.3rem, 6vw, 1.8rem);
-  line-height: 1.6;
+  font-size: clamp(1rem, 5vw, 1.55rem);
+  line-height: 1.65;
 }
 
 .question__note{
