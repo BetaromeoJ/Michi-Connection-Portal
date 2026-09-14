@@ -173,15 +173,17 @@
       <h2 class="section__title"><span data-lang="en">From Kagoshima, Japan</span><span data-lang="ja">鹿児島から</span></h2>
     </div>
 
-    <!-- Time-lapse. Nothing is fetched until the section is scrolled into
-         view (preload="none" + the observer in script.js), so the video
-         never competes with the first screen. Without JavaScript, or with
-         reduced motion, the poster frame stands in as a still photo. -->
+    <!-- Time-lapse. It loops endlessly and silently.
+         autoplay + muted + playsinline is the combination every mobile
+         browser allows without a tap; script.js retries if a browser still
+         refuses. Without JavaScript, or with reduced motion, the poster
+         frame stands in as a still photo. -->
     <figure class="figure figure--wide reveal">
       <video class="figure__media"
              poster="images/sakurajima.jpg"
              width="1024" height="688"
-             muted loop playsinline preload="none"
+             autoplay muted loop playsinline webkit-playsinline
+             disablepictureinpicture preload="metadata"
              aria-label="Time-lapse of Sakurajima, an active volcano in Kagoshima Bay"
              data-aria-ja="鹿児島湾に浮かぶ活火山・桜島のタイムラプス">
         <source src="images/sakurajima.mp4" type="video/mp4">

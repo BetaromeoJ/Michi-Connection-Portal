@@ -116,44 +116,98 @@
   }
 
 
-  /* --- 3. Sakurajima time-lapse ------------------------------------ */
+  /* --- 3. Sakurajima time-lapse ------------------------------------
+
+     Goal: it plays, it loops, and it never stops on its own.
+
+     The <video> already carries autoplay + muted + loop + playsinline,
+     which every current mobile browser allows silently. This block only
+     exists for the cases where a browser still says no — iOS Low Power
+     Mode, data saver, a strict iframe — and keeps trying:
+
+       · sets .muted as a property, not just an attribute (Safari)
+       · retries whenever the file becomes playable
+       · retries when the section scrolls into view
+       · retries when the tab is brought back to the front
+       · retries once on the visitor's first tap anywhere on the page
+       · and only if all of that fails, shows the play button
+
+     It never pauses the clip itself, so nothing here can leave the video
+     stopped. Reduced motion is the one exception: then the poster frame
+     is shown as a still photo, which is what that setting asks for.
+     ------------------------------------------------------------------ */
 
   var reduceMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var video = document.querySelector('.figure__media[poster]');
-
-  // The clip is ~1.5 MB. preload="none" in the HTML means nothing is
-  // fetched until play() is called here, and that only happens once the
-  // section is actually on screen. Reduced motion keeps the poster still.
   var playBtn = document.querySelector('.video-play');
 
-  function tryPlay(showButtonOnFailure) {
-    var playing = video.play();
-    if (playing && playing.then) {
-      playing.then(function () {
-        if (playBtn) playBtn.hidden = true;
-      }).catch(function () {
-        // Autoplay refused (iOS Low Power Mode, data saver). Offer the button.
-        if (playBtn && showButtonOnFailure) playBtn.hidden = false;
-      });
+  if (video && reduceMotion) {
+    video.removeAttribute('autoplay');
+    video.pause();
+  }
+
+  if (video && !reduceMotion) {
+
+    video.muted = true;               // property, not only the attribute
+    video.loop = true;
+    video.playsInline = true;
+
+    var nudge = function (offerButton) {
+      if (!video.paused && !video.ended) return;
+      var playing = video.play();
+      if (playing && playing.then) {
+        playing.then(function () {
+          if (playBtn) playBtn.hidden = true;
+        }).catch(function () {
+          if (playBtn && offerButton) playBtn.hidden = false;
+        });
+      }
+    };
+
+    // The clip is short; if it ever reaches the end, start it again.
+    video.addEventListener('ended', function () {
+      video.currentTime = 0;
+      nudge(false);
+    });
+
+    // Retry as soon as there is something to play.
+    ['loadeddata', 'canplay', 'canplaythrough'].forEach(function (evt) {
+      video.addEventListener(evt, function () { nudge(false); });
+    });
+
+    // Some browsers stall a background video; pick it back up.
+    video.addEventListener('pause', function () {
+      window.setTimeout(function () { nudge(false); }, 300);
+    });
+
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) nudge(false);
+    });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) nudge(true);
+        });
+      }, { threshold: 0.15 }).observe(video);
     }
-  }
 
-  if (video && playBtn) {
-    playBtn.addEventListener('click', function () { tryPlay(false); });
-  }
+    // A first tap anywhere counts as the gesture a strict browser wants.
+    var unlock = function () {
+      nudge(false);
+      document.removeEventListener('touchstart', unlock);
+      document.removeEventListener('click', unlock);
+    };
+    document.addEventListener('touchstart', unlock, { passive: true, once: true });
+    document.addEventListener('click', unlock, { once: true });
 
-  if (video && !reduceMotion && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          tryPlay(true);
-        } else if (!entry.target.paused) {
-          entry.target.pause();          // off screen: no battery, no data
-        }
-      });
-    }, { threshold: 0.25 }).observe(video);
+    if (playBtn) {
+      playBtn.addEventListener('click', function () { nudge(false); });
+    }
+
+    nudge(false);
   }
 
 
