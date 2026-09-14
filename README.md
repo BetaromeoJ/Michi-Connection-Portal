@@ -9,7 +9,7 @@ Concept: **Remember Michi. Know the story. Stay connected.**
 Built on the WADARIN LP Framework v2.0 build rules
 (static HTML / CSS / minimal JS / `images/`, GitHub Pages, no Base64, relative paths).
 
-Version 1.3 — English + Japanese, real photos, Sakurajima time-lapse, live links.
+Version 2.1 — second draft, plus the eruption photo and an always-English start.
 
 ---
 
@@ -21,12 +21,22 @@ style.css       Mobile first. Section 10 holds the desktop overrides.
 script.js       Language switch, the time-lapse, one soft reveal. Nothing else.
 favicon.svg
 images/
-  michi-portrait.jpg     600 × 600      45 KB
-  sakurajima.mp4       1024 × 688     1.45 MB   18.5s silent loop, no audio track
-  sakurajima.jpg       1024 × 688       78 KB   poster frame for the video
-  otsu-no-konbo.jpg    1200 × 800       49 KB
-  og-image.png         1200 × 630      149 KB   share image
+  michi-portrait.jpg        600 × 600      45 KB
+  sakurajima.mp4          1024 × 688     1.45 MB  18.5s silent loop, no audio track
+  sakurajima.jpg          1024 × 688       78 KB  poster frame for the video
+  sakurajima-eruption.jpg 1200 × 900      142 KB  ATTRIBUTION REQUIRED — see below
+  otsu-no-konbo.jpg       1200 × 800       49 KB
+  og-image.png            1200 × 630      149 KB  share image
 ```
+
+### ⚠ sakurajima-eruption.jpg — credit must stay visible
+
+The photographer allows this photo **only on the condition that
+`©ken.n.miffy.752` is displayed with it.** The credit is the `<span class="credit">`
+inside that figure's `<figcaption>` in `index.html`.
+
+Do not remove it, do not hide it with CSS, and do not reuse the file anywhere
+else (social posts, slides, the business card) without carrying the same credit.
 
 First screen weighs **86 KB** (HTML + CSS + JS + portrait). Nothing else is
 fetched until the visitor scrolls.
@@ -47,10 +57,15 @@ CSS hides whichever one does not match `<html lang="…">`. That means:
 
 - no framework, no build step, no translation files
 - with JavaScript disabled the page stays in English and reads completely
-- the switch remembers the choice in `localStorage`
-- a visitor whose browser is set to Japanese sees Japanese on the first visit;
-  everyone else — including every MEL26 visitor — sees English.
-  To turn that off, delete the `navigator.language` line in `script.js`.
+
+**Every page load starts in English.** There is no browser-language guess and
+nothing is remembered between visits — a phone set to Japanese still lands on the
+English page, and so does a return visitor who switched to Japanese last time.
+This is deliberate: the MEL26 visitor scanning the QR code must always see
+English first. The switch is one tap away for anyone who wants Japanese.
+
+(If you ever want the choice remembered again, it is the `applyLang('en')` call
+near the end of the language block in `script.js`.)
 
 **When editing Japanese copy**, keep one paragraph on one line in the HTML.
 A line break inside Japanese text renders as a visible half-width space.
@@ -77,12 +92,23 @@ e.g. `https://USERNAME.github.io/michi-connection-portal/`.
 The Instagram link deliberately drops the `?hl=ja` parameter; it would force the
 Japanese Instagram interface on every visitor.
 
-### Connect section — ready but switched off
+### Connect section — LinkedIn is a placeholder
 
-LinkedIn, GitHub and Website sit in a commented-out block at the end of the
-Connect list. To switch one on, delete the `<!--` / `-->` markers around its
-`<li>` and replace the `REPLACE_…_URL` token. LinkedIn is kept there because it
-is the planned primary connection for the international educator network.
+LinkedIn sits **first** in the list because it is the primary international
+connection, but there is no URL yet, so the row currently renders as a dashed,
+non-clickable "coming soon" placeholder.
+
+**Before publishing, do one of these two things:**
+
+1. Replace that `<li>` with the working LinkedIn row — it is right there in the
+   commented-out block below the list — and put the real profile URL in
+   `REPLACE_LINKEDIN_URL`; or
+2. Delete the placeholder `<li>` so the row does not appear at all.
+
+Do not publish with the row still saying "coming soon".
+
+GitHub and Website are also commented out at the end of the list; delete the
+`<!--` / `-->` markers and add the URL to switch either on.
 
 Each URL appears **once**, in the Connect section only.
 

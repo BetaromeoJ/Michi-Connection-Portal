@@ -26,7 +26,6 @@
     }
   };
 
-  var STORAGE_KEY = 'mcp-lang';
   var buttons = document.querySelectorAll('[data-set-lang]');
   var descTag = document.querySelector('meta[name="description"]');
 
@@ -62,8 +61,6 @@
       buttons[j].classList.toggle('is-on', on);
       buttons[j].setAttribute('aria-pressed', on ? 'true' : 'false');
     }
-
-    try { window.localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
   }
 
   for (var k = 0; k < buttons.length; k++) {
@@ -72,17 +69,30 @@
     });
   }
 
-  // Remembered choice first; otherwise a Japanese browser gets Japanese,
-  // and everyone else — including every MEL26 visitor — gets English.
-  var initial = null;
-  try { initial = window.localStorage.getItem(STORAGE_KEY); } catch (e) {}
-  if (initial !== 'en' && initial !== 'ja') {
-    initial = (navigator.language || '').toLowerCase().indexOf('ja') === 0 ? 'ja' : 'en';
+  // Every visit starts in English — no browser-language guess, nothing
+  // remembered between visits. The MEL26 visitor who scans the QR code
+  // always lands on the English page, whatever their phone is set to.
+  applyLang('en');
+
+
+  /* --- 2. The switch steps back once the hero is gone -------------- */
+
+  var switcher = document.querySelector('.lang-switch');
+  if (switcher) {
+    var compact = false;
+    var onScroll = function () {
+      var past = window.pageYOffset > 160;
+      if (past !== compact) {
+        compact = past;
+        switcher.classList.toggle('is-compact', past);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
-  applyLang(initial);
 
 
-  /* --- 2. Sakurajima time-lapse ------------------------------------ */
+  /* --- 3. Sakurajima time-lapse ------------------------------------ */
 
   var reduceMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -123,7 +133,7 @@
   }
 
 
-  /* --- 3. Reveal -------------------------------------------------- */
+  /* --- 4. Reveal -------------------------------------------------- */
 
   var targets = document.querySelectorAll('.reveal');
   if (!targets.length) return;

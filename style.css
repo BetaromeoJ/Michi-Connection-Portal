@@ -44,7 +44,8 @@
   --space-s:    0.75rem;
   --space-m:    1.25rem;
   --space-l:    2.5rem;
-  --space-xl:   4rem;
+  --space-xl:   3.5rem;  /* section rhythm — tightened in v2.0 to shorten
+                            the page without touching type sizes */
 
   --radius:     14px;
 
@@ -127,8 +128,8 @@ html[lang="ja"] .lead{ font-size: 1rem; }
 .no-js .lang-switch{ display: none; }   /* nothing dead on screen */
 
 .lang-switch__btn{
-  min-height: 32px;
-  padding: 0.25rem 0.7rem;
+  min-height: 38px;
+  padding: 0.3rem 0.8rem;
   border: 0;
   border-radius: 999px;
   background: transparent;
@@ -142,6 +143,23 @@ html[lang="ja"] .lead{ font-size: 1rem; }
 .lang-switch__btn.is-on{
   background: var(--ink);
   color: var(--paper);
+}
+
+/* After the hero has scrolled away the switch steps back: smaller, and
+   it stops covering body text. The tap targets stay comfortable. */
+.lang-switch{ transition: opacity .2s ease, transform .2s ease; }
+.lang-switch.is-compact{
+  transform: scale(0.86);
+  transform-origin: top right;
+  opacity: 0.9;
+}
+.lang-switch.is-compact:hover,
+.lang-switch.is-compact:focus-within{
+  transform: none;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce){
+  .lang-switch{ transition: none; }
 }
 
 
@@ -339,6 +357,13 @@ html[lang="ja"] .question__note{ line-height: 1.9; }
   background: var(--paper-2);
 }
 
+/* The eruption photo keeps its own 4:3 proportion. */
+.figure--photo .figure__photo{
+  width: 100%;
+  height: auto;
+  background: var(--paper-2);
+}
+
 .figure figcaption{
   max-width: var(--wrap);
   margin: 0.7rem auto 0;
@@ -347,16 +372,26 @@ html[lang="ja"] .question__note{ line-height: 1.9; }
   color: var(--ink-soft);
 }
 
+/* Required attribution — must stay visible wherever this photo is used. */
+.credit{
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  opacity: 0.9;
+}
+
+.section--kagoshima .figure + .figure{ margin-top: 1.75rem; }
+
 .section--kagoshima{ padding-bottom: var(--space-l); }
 .section--kagoshima .figure + .wrap{ margin-top: 1.5rem; }
 
 
 /* === 6. Otsu no Konbo ============================================= */
 
-.gift__head{ margin-bottom: 1.75rem; }
-
-/* The photo shows all three colours, so it is landscape and sits above
-   the text — kept well under full width so the section stays small. */
+/* Kept deliberately small: this is a memory hook, not the subject of
+   the page. Photo, two short paragraphs, one line, three colours. */
 .gift__figure{ margin: 0 0 1.25rem; max-width: 28rem; }
 .gift__figure img{
   width: 100%;
@@ -366,123 +401,63 @@ html[lang="ja"] .question__note{ line-height: 1.9; }
   background: var(--paper);
 }
 
-.gift__title{ margin-bottom: 0.75rem; }
-.gift__intro p{ margin: 0; }
+.section--gift p{ margin: 0 0 0.9rem; }
 
-.colors__intro{
-  margin: 0 0 0.9rem;
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--ink-soft);
+/* The line this section exists for. */
+.gift__punch{
+  margin: 1.4rem 0 1.3rem !important;
+  padding-left: 1rem;
+  border-left: 3px solid var(--ember);
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.5;
 }
 
+/* One compact block, three rows. The swatch is the information. */
 .colors{
   list-style: none;
-  margin: 0 0 1.9rem;
+  margin: 0;
   padding: 0;
-  display: grid;
-  gap: 0.6rem;
-}
-
-/* One row per colour on a phone — three narrow columns would squeeze
-   the wish text to two characters a line. */
-.color{
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  padding: 0.85rem 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--paper);
+  overflow: hidden;
 }
 
+.color{
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+}
+.color + .color{ border-top: 1px solid var(--line); }
+
 .color__swatch{
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
-  margin-top: 0.3rem;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba(35,32,29,0.14);
+  box-shadow: inset 0 0 0 1px rgba(35,32,29,0.16);
 }
 .color--red    .color__swatch{ background: var(--konbo-red); }
 .color--yellow .color__swatch{ background: var(--konbo-yellow); }
 .color--white  .color__swatch{ background: var(--konbo-white); }
 
-.color__text{ display: block; }
-
 .color__name{
-  display: block;
-  font-size: 0.72rem;
+  flex: 0 0 4.6rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-soft);
 }
+html[lang="ja"] .color__name{ letter-spacing: 0.04em; font-size: 0.9rem; }
+
 .color__wish{
-  display: block;
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.4;
 }
-.color__note{
-  display: block;
-  margin-top: 0.15rem;
-  font-size: 0.88rem;
-  line-height: 1.6;
-  color: var(--ink-soft);
-}
-
-.gift__story p{ margin: 0 0 0.9rem; }
-.gift__story p:last-child{ margin-bottom: 0; }
-
-/* The line this whole section exists for. */
-.gift__punch{
-  margin: 1.4rem 0 1.4rem !important;
-  padding-left: 1rem;
-  border-left: 3px solid var(--ember);
-  font-size: 1.15rem;
-  font-weight: 700;
-  line-height: 1.5;
-}
-
-.story-details{
-  margin-top: 1.75rem;
-  border-top: 1px solid var(--line);
-  padding-top: 1rem;
-}
-.story-details > summary{
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: 44px;
-  padding: 0.4rem 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--ember);
-  cursor: pointer;
-  list-style: none;
-}
-.story-details > summary::-webkit-details-marker{ display: none; }
-.story-details > summary::after{
-  content: "+";
-  margin-left: auto;
-  font-size: 1.2rem;
-  line-height: 1;
-  color: var(--ink-soft);
-}
-.story-details[open] > summary::after{ content: "–"; }
-
-.story-details__body ul{
-  margin: 0.4rem 0 0;
-  padding-left: 1.15rem;
-  font-size: 0.92rem;
-  line-height: 1.7;
-  color: var(--ink-soft);
-}
-.story-details__body li{ margin-bottom: 0.5rem; }
-.story-details__body li:last-child{ margin-bottom: 0; }
-html[lang="ja"] .story-details__body ul{ line-height: 1.9; }
-
 
 /* === 7. Connect links ============================================= */
 
@@ -525,6 +500,20 @@ html[lang="ja"] .story-details__body ul{ line-height: 1.9; }
 }
 .link-row__label{ flex: 1 1 auto; }
 .link-row__arrow{ color: var(--ink-soft); font-size: 1.1rem; }
+
+/* LinkedIn before its URL exists: same shape as a link, plainly not one. */
+.link-row--todo{
+  border-style: dashed;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: default;
+}
+.link-row--todo .link-row__icon{ color: var(--line); }
+.link-row__todo{
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
 
 
 /* === 8. Footer ==================================================== */
@@ -612,25 +601,18 @@ html[lang="ja"] .story-details__body ul{ line-height: 1.9; }
   .section{ padding-block: 5rem; }
   .section__title{ font-size: 1.65rem; }
 
-  .figure--wide .figure__media{
+  .figure--wide .figure__media,
+  .figure--wide .figure__photo{
     max-width: var(--wrap-wide);
     margin-inline: auto;
     border-radius: var(--radius);
   }
   .figure figcaption{ max-width: var(--wrap-wide); padding-inline: 1.5rem; }
 
-  /* The gift section gets a little more room so the three colours
-     can sit side by side without crushing the text. */
-  .section--gift .wrap{ max-width: 46rem; }
-
-  .gift__head{ margin-bottom: 2.25rem; }
   .gift__figure{ margin-bottom: 1.75rem; }
-
-  .colors{ grid-template-columns: repeat(3, 1fr); gap: 0.9rem; }
-  .color{ flex-direction: column; gap: 0.6rem; padding: 1.1rem; }
-  .color__swatch{ margin-top: 0; }
-
-  .gift__punch{ font-size: 1.3rem; }
+  .colors{ max-width: 26rem; }
+  .color{ padding: 0.8rem 1.1rem; }
+  .gift__punch{ font-size: 1.28rem; }
 
   /* One column, so no row is ever left with a single orphan card.
      Narrow enough that the rows still read as buttons, not banners. */

@@ -10,11 +10,12 @@
 <!-- ===================================================================
      PLACEHOLDERS — search this file for "REPLACE_" to find them all.
      -------------------------------------------------------------------
-     1. REPLACE_SITE_URL        canonical + og:url — the only one still
-                                needed before publishing
-     Inside the commented-out block at the end of the Connect section,
-     ready to switch on whenever the accounts exist:
-        REPLACE_LINKEDIN_URL / REPLACE_GITHUB_URL / REPLACE_WEBSITE_URL
+     1. REPLACE_SITE_URL        canonical + og:url (2 places in <head>)
+     2. REPLACE_LINKEDIN_URL    Connect section — the LinkedIn row is
+                                currently a visible "coming soon"
+                                placeholder; see the comment there
+     Optional, in the commented-out block at the end of the Connect list:
+        REPLACE_GITHUB_URL / REPLACE_WEBSITE_URL
 
      LIVE LINKS (Connect section)
        Facebook   https://www.facebook.com/wowwdarling
@@ -118,11 +119,11 @@
 
       <p class="lead" data-lang="en">
         I&rsquo;m a Japanese language teacher from Kagoshima, Japan. I&rsquo;ve been teaching
-        for over 30 years, and I&rsquo;m especially interested in how schools can become
-        more flexible for different learners.
+        for over 30 years. Today, I work at a flexible public high school where students
+        with many different backgrounds learn together.
       </p>
       <!-- 日本語は改行が半角スペースになるため、1段落=1行で書く -->
-      <p class="lead" data-lang="ja">日本の鹿児島で国語を教えています。教員歴は30年を超えました。いろいろな生徒にとって、学校がもっと柔軟な場所になれないか。そこに一番の関心があります。</p>
+      <p class="lead" data-lang="ja">私は鹿児島の国語教師です。30年以上、教員として働いてきました。現在は、さまざまな背景を持つ生徒たちが共に学ぶ、柔軟な仕組みを持つ公立高校で働いています。</p>
 
       <p class="meta-line">
         <span data-lang="en">Education &nbsp;·&nbsp; Google&nbsp;for&nbsp;Education &nbsp;·&nbsp; AI&nbsp;&amp;&nbsp;School&nbsp;DX</span>
@@ -145,11 +146,12 @@
         <p data-lang="ja">子どもを学校に合わせるのではなく、学校の側を変えることはできないか。</p>
       </blockquote>
 
+      <!-- 短く。Aboutと内容が重ならないようにし、問いそのものを主役にする。 -->
       <p class="question__note" data-lang="en">
-        I teach at a public high school in Japan with a flexible system, where students
-        arrive from many different backgrounds. That is where this question comes from.
+        Working with students from many different backgrounds keeps bringing me back to
+        this question.
       </p>
-      <p class="question__note" data-lang="ja">さまざまな背景を持つ生徒が学ぶ、柔軟な仕組みを持つ日本の公立高校で働いています。この問いは、その毎日から生まれました。</p>
+      <p class="question__note" data-lang="ja">さまざまな背景を持つ生徒たちと関わる中で、私は何度もこの問いに立ち返ります。</p>
     </div>
   </section>
 
@@ -187,7 +189,25 @@
 
       <figcaption>
         <span data-lang="en">Sakurajima &mdash; an active volcano in Kagoshima Bay.</span>
-        <span data-lang="ja">桜島 &mdash; 鹿児島湾に浮かぶ活火山。</span>
+        <span data-lang="ja">桜島 &mdash; 鹿児島湾にある活火山。</span>
+      </figcaption>
+    </figure>
+
+    <!-- ATTRIBUTION REQUIRED.
+         The photographer allows this photo only on the condition that
+         "©ken.n.miffy.752" is shown with it. Do not remove the credit
+         line below, and do not reuse this image without it. -->
+    <figure class="figure figure--wide figure--photo reveal">
+      <img class="figure__photo"
+           src="images/sakurajima-eruption.jpg"
+           width="1200" height="900"
+           alt="Sakurajima erupting, a tall ash plume above the mountain, seen over the rooftops of Kagoshima city at sunset"
+           data-alt-ja="夕暮れの鹿児島市街の向こうで噴煙を上げる桜島"
+           loading="lazy" decoding="async">
+      <figcaption>
+        <span data-lang="en">Sakurajima, erupting &mdash; seen from the city.</span>
+        <span data-lang="ja">噴火する桜島。市街地から。</span>
+        <span class="credit">&copy;ken.n.miffy.752</span>
       </figcaption>
     </figure>
 
@@ -202,115 +222,63 @@
 
   <!-- ============================================================
        SECTION 05 — OTSU NO KONBO
-       Not a culture lesson. A memory hook:
-       "Oh, this is the little one Michi gave me."
+       A small networking hook, not a culture lesson. The page is about
+       Michi; this is the object that makes people remember him.
+       Deliberately short: two sentences, the line that matters, and the
+       three colours as one compact block.
        ============================================================ -->
   <section class="section section--gift" id="gift">
     <div class="wrap">
 
-      <div class="gift__head">
-        <figure class="gift__figure reveal">
-          <img src="images/otsu-no-konbo.jpg"
-               width="1200" height="800"
-               alt="Three Otsu no Konbo folk toys from Kagoshima — white, red and yellow — standing side by side"
-               data-alt-ja="並んで立つ鹿児島の郷土玩具「オッのコンボ」白・赤・黄の3体"
-               loading="lazy" decoding="async">
-        </figure>
+      <figure class="gift__figure reveal">
+        <img src="images/otsu-no-konbo.jpg"
+             width="1200" height="800"
+             alt="Three Otsu no Konbo folk toys from Kagoshima — white, red and yellow — standing side by side"
+             data-alt-ja="並んで立つ鹿児島の郷土玩具「オッのコンボ」白・赤・黄の3体"
+             loading="lazy" decoding="async">
+      </figure>
 
-        <div class="gift__intro">
-          <h2 class="section__title gift__title">
-            <span data-lang="en">What is this little guy?</span>
-            <span data-lang="ja">この子は、なに？</span>
-          </h2>
+      <h2 class="section__title">
+        <span data-lang="en">What is this little guy?</span>
+        <span data-lang="ja">この子は、なに？</span>
+      </h2>
 
-          <p data-lang="en">
-            This is &ldquo;Otsu no Konbo,&rdquo; a traditional folk toy from Kagoshima, Japan &mdash;
-            a good-luck charm that families keep in the home. When it falls over, it stands back up.
-          </p>
-          <p data-lang="ja">鹿児島に伝わる郷土玩具「オッのコンボ」。家に飾って福を願う縁起物です。倒れても、また起き上がります。</p>
-        </div>
-      </div>
+      <p data-lang="en">
+        This is &ldquo;Otsu no Konbo,&rdquo; a traditional folk toy from Kagoshima, Japan.
+        When it falls over, it stands back up.
+      </p>
+      <p data-lang="ja">これは鹿児島の伝統的な郷土玩具「オッのコンボ」です。倒れても、また起き上がります。</p>
 
-      <p class="colors__intro">
-        <span data-lang="en">Each color carries a different wish.</span>
-        <span data-lang="ja">色ごとに、込められた願いが違います。</span>
+      <p data-lang="en">
+        I brought one to MEL26 as a little gift &mdash; and as a symbol for innovators.
+        We keep learning, trying, and moving forward.
+      </p>
+      <p data-lang="ja">MEL26への小さなお土産として持ってきました。そして、イノベーターの象徴にもぴったりだと思っています。私たちは学び、挑戦し、前へ進み続けるからです。</p>
+
+      <p class="gift__punch">
+        <span data-lang="en">You chose your color.<br>Now you know what it means.</span>
+        <span data-lang="ja">あなたが選んだ色。<br>その意味は、これです。</span>
       </p>
 
-      <!-- Three colors. The swatch is the information, not decoration.
-           Order matches the photo above: white, red, yellow, left to right. -->
+      <!-- The swatch is the information, not decoration. Order matches the
+           photo above: white, red, yellow, left to right. -->
       <ul class="colors">
         <li class="color color--white">
           <span class="color__swatch" aria-hidden="true"></span>
-          <span class="color__text">
-            <span class="color__name"><span data-lang="en">White</span><span data-lang="ja">白</span></span>
-            <span class="color__wish"><span data-lang="en">Beauty</span><span data-lang="ja">美しさ</span></span>
-            <span class="color__note"><span data-lang="en">A wish for beauty.</span><span data-lang="ja">美しくありますように。</span></span>
-          </span>
+          <span class="color__name"><span data-lang="en">White</span><span data-lang="ja">白</span></span>
+          <span class="color__wish"><span data-lang="en">Beauty</span><span data-lang="ja">美しさ</span></span>
         </li>
         <li class="color color--red">
           <span class="color__swatch" aria-hidden="true"></span>
-          <span class="color__text">
-            <span class="color__name"><span data-lang="en">Red</span><span data-lang="ja">赤</span></span>
-            <span class="color__wish"><span data-lang="en">Home &amp; Family</span><span data-lang="ja">家内安全</span></span>
-            <span class="color__note"><span data-lang="en">Peace and safety for everyone at home.</span><span data-lang="ja">家族みんなが、無事に健やかに。</span></span>
-          </span>
+          <span class="color__name"><span data-lang="en">Red</span><span data-lang="ja">赤</span></span>
+          <span class="color__wish"><span data-lang="en">Home &amp; Family</span><span data-lang="ja">家内安全</span></span>
         </li>
         <li class="color color--yellow">
           <span class="color__swatch" aria-hidden="true"></span>
-          <span class="color__text">
-            <span class="color__name"><span data-lang="en">Yellow</span><span data-lang="ja">黄</span></span>
-            <span class="color__wish"><span data-lang="en">Good Fortune</span><span data-lang="ja">金運</span></span>
-            <span class="color__note"><span data-lang="en">For prosperity, and a little luck with money.</span><span data-lang="ja">実りと、お金にまつわる幸運を。</span></span>
-          </span>
+          <span class="color__name"><span data-lang="en">Yellow</span><span data-lang="ja">黄</span></span>
+          <span class="color__wish"><span data-lang="en">Good Fortune</span><span data-lang="ja">金運</span></span>
         </li>
       </ul>
-
-      <!-- The reason this section exists. -->
-      <div class="gift__story">
-        <p data-lang="en">
-          I brought these little figures from Kagoshima to MEL26, as a small gift for the
-          educators I met in Melbourne.
-        </p>
-        <p data-lang="ja">この小さな人形を鹿児島からMEL26へ持っていきました。メルボルンで出会った先生方への、ささやかなおみやげです。</p>
-
-        <p class="gift__punch">
-          <span data-lang="en">You chose your color.<br>Now you know what it means.</span>
-          <span data-lang="ja">あなたが選んだ色。<br>その意味が、これです。</span>
-        </p>
-
-        <p data-lang="en">
-          I also love the way it always stands back up. To me, that feels like a good little
-          symbol for innovators &mdash; we keep learning, trying and moving forward, even when
-          things don&rsquo;t go as planned.
-        </p>
-        <p data-lang="ja">何度倒れても起き上がるところも気に入っています。思いどおりにいかない日があっても、学び、試し、また前へ進む。イノベーターにぴったりの小さな象徴だと思うのです。</p>
-      </div>
-
-      <!-- Background for whoever wants it. Folded away by default so the
-           section stays short on a phone. -->
-      <details class="story-details">
-        <summary>
-          <span data-lang="en">Learn the story</span>
-          <span data-lang="ja">もう少し詳しく</span>
-        </summary>
-
-        <div class="story-details__body">
-          <ul data-lang="en">
-            <li>Otsu no Konbo is a guardian of happiness in Kagoshima, said to be the wife of Daikoku, one of the Seven Lucky Gods.</li>
-            <li>Families keep one in the kitchen and wish for everyone&rsquo;s health.</li>
-            <li>There is a custom of buying one more than the number of people in the family &mdash; the extra one is there for happiness to arrive in.</li>
-            <li>The name comes from <i lang="ja">okiagari-koboshi</i>, the old Japanese roly-poly doll. Over time the words softened into &ldquo;Otsu no Konbo.&rdquo;</li>
-            <li>Each one is shaped and painted by hand, so no two faces are quite the same.</li>
-          </ul>
-          <ul data-lang="ja">
-            <li>鹿児島に伝わる幸福の守り神。七福神の一人・大黒様の奥様とされています。</li>
-            <li>家族の無病息災を祈願し、台所に飾ると幸運が訪れるといわれます。</li>
-            <li>家族の人数より1つ多く買い、その余分な1つに幸福がやってくるよう願う風習があります。</li>
-            <li>「起き上がり小法師」がなまって「オッのコンボ」と呼ばれるようになったとされています。</li>
-            <li>一つ一つ表情や形が少しずつ違う、個性的で愛らしい郷土玩具です。</li>
-          </ul>
-        </div>
-      </details>
 
     </div>
   </section>
@@ -327,11 +295,29 @@
       <p class="lead lead--tight" data-lang="en">
         If we met at MEL26 &mdash; or anywhere else &mdash; I&rsquo;d be glad to keep talking.
       </p>
-      <p class="lead lead--tight" data-lang="ja">
-        MEL26で、あるいはどこかでお会いできたなら、これからも話を続けられたらうれしいです。
-      </p>
+      <p class="lead lead--tight" data-lang="ja">MEL26で出会った方も、どこか別の場所で出会った方も、これからもつながっていけたらうれしいです。</p>
 
       <ul class="links">
+
+        <!-- =======================================================
+             LinkedIn — PLACEHOLDER, no URL yet.
+             It is first because it is the primary international
+             connection. Before publishing, do ONE of these two:
+               (a) replace this whole <li> with the working version in
+                   the commented block at the end of this list, using
+                   the real profile URL, or
+               (b) delete this <li> so the row does not appear.
+             Do not publish with the row still saying "coming soon".
+             ======================================================= -->
+        <li>
+          <span class="link-row link-row--todo">
+            <span class="link-row__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.75V21h-4v-5.6c0-1.34-.03-3.06-1.9-3.06-1.9 0-2.2 1.45-2.2 2.96V21H9z"/></svg>
+            </span>
+            <span class="link-row__label">LinkedIn</span>
+            <span class="link-row__todo"><span data-lang="en">coming soon</span><span data-lang="ja">準備中</span></span>
+          </span>
+        </li>
 
         <li>
           <a class="link-row" href="https://www.facebook.com/wowwdarling" target="_blank" rel="noopener noreferrer">
@@ -365,9 +351,8 @@
           </a>
         </li>
 
-        <!-- Ready to switch on later — remove the comment markers and add the URL.
-             LinkedIn is kept here because it is the planned primary connection
-             for the international educator network.
+        <!-- Working LinkedIn row. Move this up to replace the placeholder
+             above once the profile URL is known.
         <li>
           <a class="link-row" href="REPLACE_LINKEDIN_URL" target="_blank" rel="noopener noreferrer">
             <span class="link-row__icon" aria-hidden="true">
@@ -377,6 +362,9 @@
             <span class="link-row__arrow" aria-hidden="true">&rarr;</span>
           </a>
         </li>
+        -->
+
+        <!-- Optional extras — remove the comment markers and add the URL.
         <li>
           <a class="link-row" href="REPLACE_GITHUB_URL" target="_blank" rel="noopener noreferrer">
             <span class="link-row__icon" aria-hidden="true">
