@@ -33,8 +33,8 @@
       description: 'Michi Wada is a Japanese educator from Kagoshima, Japan, connecting with educators around the world through education, innovation, AI, and school transformation.'
     },
     ja: {
-      title: 'ワダミチ｜教育者・イノベーター',
-      description: '鹿児島で国語を教えるワダミチのポータル。教育、イノベーション、AI、学校DXを通じて、世界の教育者とつながります。'
+      title: 'ワダリン｜教育者・イノベーター',
+      description: '鹿児島で国語を教えるワダリンのポータル。教育、イノベーション、AI、学校DXを通じて、世界の教育者とつながります。'
     }
   };
 
