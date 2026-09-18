@@ -9,7 +9,7 @@ Concept: **Remember Michi. Know the story. Stay connected.**
 Built on the WADARIN LP Framework v2.0 build rules
 (static HTML / CSS / minimal JS / `images/`, GitHub Pages, no Base64, relative paths).
 
-Version 2.1 — second draft, plus the eruption photo and an always-English start.
+Version 2.5 — WhatsApp added to the Connect section.
 
 ---
 
@@ -18,7 +18,7 @@ Version 2.1 — second draft, plus the eruption photo and an always-English star
 ```
 index.html      All copy and markup, in both languages. Six sections.
 style.css       Mobile first. Section 10 holds the desktop overrides.
-script.js       Language switch, the time-lapse, one soft reveal. Nothing else.
+script.js       WHATSAPP_NUMBER, language switch, the time-lapse, one reveal.
 favicon.svg
 images/
   michi-portrait.jpg        600 × 600      45 KB
@@ -38,8 +38,9 @@ inside that figure's `<figcaption>` in `index.html`.
 Do not remove it, do not hide it with CSS, and do not reuse the file anywhere
 else (social posts, slides, the business card) without carrying the same credit.
 
-First screen weighs **86 KB** (HTML + CSS + JS + portrait). Nothing else is
-fetched until the visitor scrolls.
+The first screen paints from **86 KB** (HTML + CSS + JS + portrait). The
+Sakurajima clip loads in the background so it is always ready to play — it does
+not block anything, but it is part of the page's total weight.
 
 ---
 
@@ -81,20 +82,53 @@ One thing: search `index.html` for **`REPLACE_SITE_URL`**. It appears twice, in
 `<head>` — the canonical link and `og:url`. Put the published address there,
 e.g. `https://USERNAME.github.io/michi-connection-portal/`.
 
-### Connect section — live
+### Connect section — in display order
 
 | | |
 |---|---|
-| Facebook | `https://www.facebook.com/wowwdarling` |
+| WhatsApp | built in `script.js` from `WHATSAPP_NUMBER` — see below |
+| LinkedIn | placeholder, "coming soon / 準備中" |
 | Instagram | `https://www.instagram.com/wowwdarling/` |
+| Facebook | `https://www.facebook.com/wowwdarling` |
 | Email | `michihirowadarin@gmail.com` |
+
+### WhatsApp — set the number in one place
+
+Open **`script.js`** and edit the first constant at the top of the file:
+
+```js
+var WHATSAPP_NUMBER = 'REPLACE_WITH_YOUR_NUMBER';
+```
+
+Use international format — **drop the leading 0, put Japan's country code
+81 in front, digits only** (no `+`, no hyphens, no spaces). A number written
+`0XX-XXXX-XXXX` becomes `81XXXXXXXXXX`.
+
+That is the only place the number appears. The script builds the standard
+Click-to-Chat link (`https://wa.me/<number>?text=…`) and puts it on the
+WhatsApp row, with the first message prefilled:
+
+> Hi Michi! We met at MEL26.
+
+(English in both language views — the visitors are the educators from MEL26.)
+The message is escaped with `encodeURIComponent`, so punctuation cannot break
+the URL. To change the wording, edit `WHATSAPP_MESSAGE` next to the number.
+
+**Until the number is filled in**, the WhatsApp row is displayed but opens
+nothing, and a warning appears in the browser console. No broken `wa.me` link
+is ever opened, and nothing technical is shown to visitors.
+
+**On privacy:** the number is never printed as text on the page. But WhatsApp's
+Click-to-Chat link necessarily contains it, so anyone who inspects or
+long-presses the link can read it. It is not a secret — treat it as a number
+you are willing to publish.
 
 The Instagram link deliberately drops the `?hl=ja` parameter; it would force the
 Japanese Instagram interface on every visitor.
 
 ### Connect section — LinkedIn is a placeholder
 
-LinkedIn sits **first** in the list because it is the primary international
+LinkedIn sits directly under WhatsApp because it is the primary international
 connection, but there is no URL yet, so the row currently renders as a dashed,
 non-clickable "coming soon" placeholder.
 
@@ -122,13 +156,15 @@ into the beginning so the loop has no visible jump.
 
 How it behaves:
 
-- `preload="none"` — the file is not requested at all until the section scrolls
-  into view. The first screen never waits for it.
-- `muted loop playsinline`, no controls. It pauses when scrolled away.
+- `autoplay muted loop playsinline` — the combination every mobile browser
+  allows silently. It starts on its own and never stops; nothing in the code
+  pauses it.
+- `script.js` retries if a browser refuses: when the file becomes playable, when
+  the section scrolls into view, when the tab comes back to the front, and once
+  on the visitor's first tap anywhere on the page.
+- Only if all of that fails does a small play button appear over the poster.
 - `prefers-reduced-motion: reduce` → it never plays; the poster frame stands in
   as a still photo.
-- If the browser refuses to autoplay (iOS Low Power Mode, data saver), a small
-  play button appears over the poster.
 - With JavaScript disabled the poster is simply shown as a photo.
 
 **To go back to a still photo instead**, replace the `<video>` block in

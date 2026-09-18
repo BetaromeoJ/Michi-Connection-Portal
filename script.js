@@ -12,6 +12,53 @@
 (function () {
   'use strict';
 
+  /* ==================================================================
+     WHATSAPP — the only place the phone number is written.
+     ------------------------------------------------------------------
+     Replace the value below with the number in international format:
+
+       · drop the leading 0
+       · put Japan's country code 81 in front
+       · no +, no hyphens, no spaces — digits only
+
+     A Japanese mobile number written 0XX-XXXX-XXXX therefore becomes
+     81XXXXXXXXXX (11 digits after the 81).
+
+     Until this is filled in, the WhatsApp row is shown but does not
+     open anything, and a warning is logged to the browser console.
+     The number is never printed on the page — but note that WhatsApp's
+     own Click-to-Chat link necessarily contains it, so it is visible to
+     anyone who inspects or long-presses the link. It is not a secret.
+     ================================================================== */
+
+  var WHATSAPP_NUMBER = '819047777477';
+
+  // Prefilled first message. The portal's visitors are the educators
+  // Michi meets at MEL26, so this stays in English in both languages.
+  var WHATSAPP_MESSAGE = 'Hi Michi! We met at MEL26.';
+
+  (function setUpWhatsApp() {
+    var link = document.querySelector('[data-whatsapp]');
+    if (!link) return;
+
+    var digits = String(WHATSAPP_NUMBER).replace(/[^0-9]/g, '');
+
+    if (!digits || /[^0-9]/.test(WHATSAPP_NUMBER) || digits.length < 8) {
+      // Not set yet: leave the row without an href so it cannot open a
+      // broken wa.me URL. Nothing technical is shown to visitors.
+      if (window.console && console.warn) {
+        console.warn('[Michi Connection Portal] WhatsApp is not set up yet. ' +
+          'Open script.js and set WHATSAPP_NUMBER to your number in ' +
+          'international format (e.g. Japan: drop the leading 0 and prefix 81).');
+      }
+      return;
+    }
+
+    link.setAttribute('href',
+      'https://wa.me/' + digits + '?text=' + encodeURIComponent(WHATSAPP_MESSAGE));
+  })();
+
+
   /* --- 1. Language ------------------------------------------------
 
      How it works
