@@ -147,6 +147,55 @@
   applyLang('en');
 
 
+  /* --- 1b. Always open at the hero ---------------------------------
+
+     The inline script in <head> already stops the browser from
+     restoring the old scroll position and removes any leftover #hash.
+     This is the safety net for browsers that still move the page, and
+     it makes the in-page links (the hero CTA, the desktop nav) scroll
+     smoothly WITHOUT writing #connect into the address bar — so a
+     reload after tapping "Connect with Michi" still opens at the top.
+     ------------------------------------------------------------------ */
+
+  var reduceMotionScroll = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Every load starts at the hero — even if the address still carries
+  // #connect (for example a copied link). The <head> script usually
+  // removes the hash already; this covers browsers where it could not.
+  var toTop = function () {
+    try {
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    } catch (e) {}
+    window.scrollTo(0, 0);
+  };
+  toTop();
+
+  // On slow mobile networks 'load' can arrive after the visitor has
+  // already started scrolling. Never pull them back up once they have.
+  var userMoved = false;
+  var markMoved = function () { userMoved = true; };
+  ['touchstart', 'wheel', 'keydown', 'mousedown'].forEach(function (evt) {
+    window.addEventListener(evt, markMoved, { passive: true, once: true });
+  });
+
+  window.addEventListener('load', function () {
+    if (userMoved) return;
+    toTop();
+    window.requestAnimationFrame(function () { if (!userMoved) toTop(); });
+  });
+
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest ? event.target.closest('a[href^="#"]') : null;
+    if (!link || link.classList.contains('skip-link')) return;   // skip link keeps its native focus behaviour
+    var id = link.getAttribute('href').slice(1);
+    var target = id && document.getElementById(id);
+    if (!target) return;
+    event.preventDefault();
+    target.scrollIntoView({ behavior: reduceMotionScroll ? 'auto' : 'smooth', block: 'start' });
+  });
+
+
   /* --- 2. The switch steps back once the hero is gone -------------- */
 
   if (switcher) {

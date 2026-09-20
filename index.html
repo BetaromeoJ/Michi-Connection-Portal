@@ -63,8 +63,18 @@
 <link rel="stylesheet" href="style.css">
 
 <!-- Enables the reveal and the language switch only when JavaScript is
-     available, so the page still reads fully without it. -->
-<script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
+     available, so the page still reads fully without it.
+
+     It also makes every load open at the top (the hero):
+       · scrollRestoration = manual → a reload does not restore the old
+         scroll position
+       · a leftover #connect (or any #hash) is removed from the address
+         before the body is parsed, so the browser never jumps to it -->
+<script>
+document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');
+try{if('scrollRestoration' in history){history.scrollRestoration='manual';}
+if(location.hash){history.replaceState(null,'',location.pathname+location.search);}}catch(e){}
+</script>
 </head>
 
 <body class="notranslate">
@@ -117,7 +127,7 @@
         <span class="hero__mel"><span data-lang="en">MEL26 · Melbourne · 2026</span><span data-lang="ja">MEL26・メルボルン・2026</span></span>
       </p>
 
-      <a class="btn btn--primary" href="#connect"><span data-lang="en">Connect with Michi</span><span data-lang="ja">Michi とつながる</span></a>
+      <a class="btn btn--primary" href="#connect"><span data-lang="en">Connect with Michi</span><span data-lang="ja">ワダリンとつながる</span></a>
 
       <p class="hero__hint" aria-hidden="true"><span data-lang="en">…or scroll to know me a little</span><span data-lang="ja">…もう少しだけ、下へ</span></p>
     </div>
